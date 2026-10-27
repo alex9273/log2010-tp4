@@ -1,11 +1,19 @@
 public class Monceau {
     private static final int ROOT = 1; // la case 0 n'est jamais utilisée
-    private Integer[] tab;
+    private int[] tab;
     private int length; // nombre d'éléments; ils occupent tab[1..length]
 
     public Monceau() {
-        tab = new Integer[10];
+        tab = new int[10];
         length = 0;
+    }
+
+    public Monceau(int[] tableau) {
+        tab = new int[tableau.length + 1];
+        length = 0;
+        for (int i : tableau) {
+            add(i);
+        }
     }
 
     public int peek() {
@@ -19,18 +27,18 @@ public class Monceau {
             return 0;
         int minItem = peek();
         tab[ ROOT ] = tab[ length ];
-        tab[ length-- ] = null;
+        tab[ length-- ] = 0;
         if( !isEmpty( ) )
             percolateDown( ROOT );
         return minItem;
     }
 
-    public void add(Integer n) {
+    public void add(int n) {
         if(length == tab.length - 1)
             doubleArraySize();
 
         int hole = ++length;
-        for( ; hole > ROOT && n.compareTo( tab[ hole / 2 ] ) < 0; hole /= 2)
+        for( ; hole > ROOT && n < tab[ hole / 2 ]; hole /= 2)
             tab[ hole ] = tab[ hole / 2 ];
         tab[ hole ] = n;
     }
@@ -44,7 +52,7 @@ public class Monceau {
     }
 
     private void doubleArraySize(){
-        Integer[] temp = new Integer[tab.length * 2];
+        int[] temp = new int[tab.length * 2];
         for(int i = ROOT; i <= length; i++){
             temp[i] = tab[i];
         }
@@ -57,9 +65,9 @@ public class Monceau {
         int tmp = tab[ hole ];
         for( ; hole * 2 <= length; hole = child ){
             child = hole * 2; //Considérer fils de gauche
-            if( child != length && tab[ child + 1 ].compareTo( tab[ child ] ) < 0 ) //et fils droit<fils gauche
+            if( child != length && tab[ child + 1 ] < tab[ child ] ) //et fils droit<fils gauche
                 child++; //Considérer fils droit
-            if( tab[ child ].compareTo( tmp ) < 0 )//fils considéré< élément à percoler
+            if( tab[ child ] <  tmp )//fils considéré< élément à percoler
                 tab[ hole ] = tab[ child ];//Remonter le fils courrent de un niveau
             else
                 break; //sortir de la boucle. L'élément à percoler sera inséré à position hole

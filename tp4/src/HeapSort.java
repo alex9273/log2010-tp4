@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.Random;
 
 public class HeapSort {
 
@@ -7,16 +9,36 @@ public class HeapSort {
 	}
 	
 	static void heapSort(int[] arrayToSort, SortingType sort) {
-		// TODO: Faire le triage par monceau sur le tableau en entrée
+		Monceau monceau = new Monceau(arrayToSort);
+		if(sort == SortingType.ASCENDING){
+			for(int i = 0; i < arrayToSort.length; i++)
+				arrayToSort[i] = monceau.poll();
+		}
+		else{
+			for(int i = arrayToSort.length - 1; i >= 0; i--)
+				arrayToSort[i] = monceau.poll();
+		}
 	}
 	
 	public static void main(String[] args) {
 		
-		// TODO: Faite le triage par monceau d'un tableau d'entier.
-		//       Le tableau d'entier peut être généré aléatoirement et
-		//       avoir une taille considérable (20 éléments désordonnées).
-		//       Trier le même tableau d'entrée en ordre croissant et décroissant
-		//       (faite une copie).
-		//       Afficher les valeurs avant et après le triage.		
+		// DONE: Faite le triage par monceau d'un tableau d'entier.
+
+		Random random = new Random();
+		int[] original = new int[20];
+		for (int i = 0; i < original.length; i++) {
+			original[i] = random.nextInt(100);
+		}
+		System.out.println("Avant :       " + Arrays.toString(original));
+
+
+		int[] croissant = original.clone();
+		int[] decroissant = original.clone();
+
+		heapSort(croissant, SortingType.ASCENDING);
+		heapSort(decroissant, SortingType.DESCENDING);
+
+		System.out.println("Croissant :   " + Arrays.toString(croissant));
+		System.out.println("Décroissant : " + Arrays.toString(decroissant));
 	}
 }

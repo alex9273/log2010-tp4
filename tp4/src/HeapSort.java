@@ -7,16 +7,26 @@ public class HeapSort {
 		ASCENDING,
 		DESCENDING
 	}
-	
+
+
+	// heapSort est O(N log N)
+	// O(N log N) pour insérer la liste dans le monceau
+	// O(N log N) pour la remettre dans la liste à la fin
+	// O(N log N) + O(N log N) = O(N log N)
+
+	// la complexité spatiale est O(N), puisque le monceau copie tous les éléments
 	static void heapSort(int[] arrayToSort, SortingType sort) {
-		Monceau monceau = new Monceau(arrayToSort);
+		Monceau<Integer> monceau = new Monceau<>(arrayToSort.length);
+		for (int val : arrayToSort) // O(N): O(1) * n éléments de la liste
+			monceau.add(val); // O(log N): add est O(log N) puisqu'il parcour la hauteur de l'arbre
+
 		if(sort == SortingType.ASCENDING){
-			for(int i = 0; i < arrayToSort.length; i++)
-				arrayToSort[i] = monceau.poll();
+			for(int i = 0; i < arrayToSort.length; i++) // O(N): O(1) * n éléments de la liste
+				arrayToSort[i] = monceau.poll(); // O(log N): poll est O(log N) puisqu'il parcour la hauteur de l'arbre
 		}
 		else{
-			for(int i = arrayToSort.length - 1; i >= 0; i--)
-				arrayToSort[i] = monceau.poll();
+			for(int i = arrayToSort.length - 1; i >= 0; i--) // O(N): O(1) * n éléments de la liste
+				arrayToSort[i] = monceau.poll(); // O(log N): poll est O(log N) puisqu'il parcour la hauteur de l'arbre
 		}
 	}
 	

@@ -1,44 +1,53 @@
-public class Monceau {
+
+@SuppressWarnings("unchecked")
+public final class Monceau<T extends Comparable<T>> {
     private static final int ROOT = 1; // la case 0 n'est jamais utilisée
-    private int[] tab;
+    private T[] tab;
     private int length; // nombre d'éléments; ils occupent tab[1..length]
 
     public Monceau() {
-        tab = new int[10];
+        tab = (T[]) new Comparable[10];
         length = 0;
     }
 
-    public Monceau(int[] tableau) {
-        tab = new int[tableau.length + 1];
+    public Monceau(int length) {
+        if (length < 0)
+            length = 0;
+        tab = (T[]) new Comparable[length + 1];
+        this.length = 0;
+    }
+
+    public Monceau(T[] tableau) {
+        tab = (T[]) new Comparable[tableau.length + 1];
         length = 0;
-        for (int i : tableau) {
-            add(i);
+        for (T element : tableau) {
+            add(element);
         }
     }
 
-    public int peek() {
+    public T peek() {
         if( isEmpty( ) )
-            return 0;
+            return null;
         return tab[ROOT];
     }
 
-    public int poll() {
+    public T poll() {
         if( isEmpty( ) )
-            return 0;
-        int minItem = peek();
+            return null;
+        T minItem = peek();
         tab[ ROOT ] = tab[ length ];
-        tab[ length-- ] = 0;
+        tab[ length-- ] = null;
         if( !isEmpty( ) )
             percolateDown( ROOT );
         return minItem;
     }
 
-    public void add(int n) {
+    public void add(T n) {
         if(length == tab.length - 1)
             doubleArraySize();
 
         int hole = ++length;
-        for( ; hole > ROOT && n < tab[ hole / 2 ]; hole /= 2)
+        for( ; hole > ROOT && n.compareTo(tab[hole / 2]) < 0; hole /= 2)
             tab[ hole ] = tab[ hole / 2 ];
         tab[ hole ] = n;
     }
@@ -52,7 +61,7 @@ public class Monceau {
     }
 
     private void doubleArraySize(){
-        int[] temp = new int[tab.length * 2];
+        T[] temp = (T[]) new Comparable[tab.length * 2];
         for(int i = ROOT; i <= length; i++){
             temp[i] = tab[i];
         }
@@ -62,12 +71,12 @@ public class Monceau {
     private void percolateDown( int hole )
     {
         int child;
-        int tmp = tab[ hole ];
+        T tmp = tab[ hole ];
         for( ; hole * 2 <= length; hole = child ){
             child = hole * 2; //Considérer fils de gauche
-            if( child != length && tab[ child + 1 ] < tab[ child ] ) //et fils droit<fils gauche
+            if( child != length && tab[ child + 1 ].compareTo(tab[ child ]) < 0 ) //et fils droit<fils gauche
                 child++; //Considérer fils droit
-            if( tab[ child ] <  tmp )//fils considéré< élément à percoler
+            if( tab[ child ].compareTo(tmp) < 0)//fils considéré< élément à percoler
                 tab[ hole ] = tab[ child ];//Remonter le fils courrent de un niveau
             else
                 break; //sortir de la boucle. L'élément à percoler sera inséré à position hole

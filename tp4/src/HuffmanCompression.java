@@ -84,12 +84,14 @@ public class HuffmanCompression {
 		}
 	}
 	
+	// O(n)
 	private int computeMaxDepth(HuffmanNode node) {
 		if (node == null || node.isLeaf())
 			return 0;
 		return 1 + Math.max(computeMaxDepth(node.left), computeMaxDepth(node.right));
 	}
 	
+	// O(n)
 	private void generateHuffmanCodes(HuffmanNode node, String prefix, String[] codes) {
 		if (node.isLeaf()) {
 			codes[node.value & 0xFF] = prefix.isEmpty() ? "0" : prefix;
@@ -191,6 +193,7 @@ public class HuffmanCompression {
 		return frequencies;
 	}
 	
+	//O(k log k)
 	private HuffmanNode generateHuffmanTreeWithPriorityQueue(int[] frequencies) {
 		PriorityQueue<HuffmanNode> queue = new PriorityQueue<>();
 		for (int i = 0; i < frequencies.length; i++)
@@ -208,6 +211,7 @@ public class HuffmanCompression {
 		return queue.poll();
 	}
 	
+	//O(k^2)
 	private HuffmanNode generateHuffmanTreeWithoutPriorityQueue(int[] frequencies) {
 		ArrayList<HuffmanNode> nodes = new ArrayList<>();
 		for (int i = 0; i < frequencies.length; i++)
@@ -233,6 +237,7 @@ public class HuffmanCompression {
 		return Math.max(count, 1);
 	}
 
+	//O(k)
 	private HuffmanNode removeMinimum(ArrayList<HuffmanNode> nodes) {
 		int minIndex = 0;
 		for (int i = 1; i < nodes.size(); i++)
@@ -245,6 +250,7 @@ public class HuffmanCompression {
 		return min;
 	}
 	
+	//O(n)
 	public void compress(String inputFilePath, String outputFilePath) {
 		compress(inputFilePath, outputFilePath, true);
 	}

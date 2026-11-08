@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+//spécification pour les compléxités: n = #octets, k= #octets différents(<=265), L= profondeur maximale (<= k-1)
 
 public class HuffmanCompression {	
 
@@ -250,11 +251,11 @@ public class HuffmanCompression {
 		return min;
 	}
 	
-	//O(n)
 	public void compress(String inputFilePath, String outputFilePath) {
 		compress(inputFilePath, outputFilePath, true);
 	}
 	
+	//O(n): compléxité totale car elle domine
 	public void compress(String inputFilePath, String outputFilePath, boolean usePriorityQueue) {
 		try {
 			byte[] data = Files.readAllBytes(Paths.get(inputFilePath));

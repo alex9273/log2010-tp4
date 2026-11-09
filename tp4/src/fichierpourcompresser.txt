@@ -1,1 +1,0 @@
-Salut, ceci est notre fichier pour tester si notre code fait bien la job!
